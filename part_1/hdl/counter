@@ -1,0 +1,15 @@
+module counter(clk,reset_n,inc,count);
+ input clk,reset_n,inc;
+    output reg [7:0]count;
+     
+     always @(posedge clk or negedge reset_n)begin
+      if (!reset_n) begin
+         count <= 0;
+end 
+      else begin
+         if (inc==1'b1) begin
+             count <= count + 1'b1;
+        end
+    end
+end
+endmodule
