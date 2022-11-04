@@ -2,26 +2,39 @@
 
 // EC-311 Lab-2 Part-1
 
-module debouncer (
-  
-  input wire                    clk_i,                   // input clock
-  input wire                    resetn_btn_i,            // input pushbutton for active LOW reset (Hint: On Nexys A7 board, the red push button gives 0 output when pressed) 
-  input wire                    increment_counter_btn_i, // input push button for counter increment
-
-
-  // LED outputs
-  output wire                   led0,
-  output wire                   led1,
-  output wire                   led2,
-  output wire                   led3,
-  output wire                   led4,
-  output wire                   led5,
-  output wire                   led6,
-  output wire                   led7
-
-);
-
 // Your lab2 part-1 code comes here
 
+  module debouncer(reset_n, clk, button_in, button_out);
+input reset_n, clk, button_in;
+   output button_out;
+
+   parameter MAX = 10000;
+   
+
+   integer count;
+   reg trueout, button_out;
+
+   always @(posedge clk or negedge reset_n)begin
+     if (!reset_n) begin
+    trueout <= 0; 
+    button_out <= 0;
+ 	count <= 0; 
+end
+     else if (button_in == 1'b0) begin 
+    trueout <= 0; 
+    count <= 0; 
+end
+     else if (trueout==1'b0) begin
+    count <= count+1'b1;
+     if (count==MAX) begin
+    button_out <=1;
+    trueout <=1;
+    count <=0;
+end else begin
+button_out <= 0;
+end
+end
+end//always
 
 endmodule
+
